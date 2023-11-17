@@ -69,7 +69,7 @@ def preprocess_user_input(user_input, encoder):
     # Perform necessary preprocessing on the user input
     for column in user_input.columns:
         if column in encoder:
-            user_input[column] = encoder[column].transform(user_input[column].iloc[0]])[0])
+            user_input[column] = encoder[column].transform([user_input[column].iloc[0]])[0]
     return user_input
 
 def predict_churn(model, preprocessed_data):
