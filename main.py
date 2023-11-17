@@ -27,6 +27,7 @@ def user_input():
     gender = st.radio("Gender", ['Female', 'Male'])
     partner = st.selectbox("Partner", ['No', 'Yes'])
     dependents = st.selectbox("Dependents", ['No', 'Yes'])
+    phone_service = st.selectbox("Phone Service", ['No', 'Yes']) 
     multiple_lines = st.selectbox("Multiple Lines", ['No phone service', 'No', 'Yes'])
     internet_service = st.selectbox("Internet Service", ['DSL', 'Fiber optic', 'No'])
     online_security = st.selectbox("Online Security", ['No', 'Yes', 'No internet service'])
@@ -47,6 +48,7 @@ def user_input():
         'gender': gender,
         'Partner': partner,
         'Dependents': dependents,
+        'PhoneService': phone_service 
         'MultipleLines': multiple_lines,
         'InternetService': internet_service,
         'OnlineSecurity': online_security,
