@@ -48,7 +48,7 @@ def user_input():
         'gender': gender,
         'Partner': partner,
         'Dependents': dependents,
-        'PhoneService': phone_service 
+        'PhoneService': phone_service, 
         'MultipleLines': multiple_lines,
         'InternetService': internet_service,
         'OnlineSecurity': online_security,
