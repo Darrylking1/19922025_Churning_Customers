@@ -73,7 +73,7 @@ def preprocess_user_input(user_input, encoder):
 
 def predict_churn(model, preprocessed_data):
     # Make predictions using the provided model
-    prediction = model.predict(preprocessed_data)
+    prediction = model.predict(preprocessed_data.to_numpy())
     return prediction[0]
 
 def run():
