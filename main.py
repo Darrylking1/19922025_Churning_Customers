@@ -24,6 +24,7 @@ def user_input():
     monthly_charges = st.number_input("Monthly Charges", value=0.0)
     total_charges = st.number_input("Total Charges", value=0.0)
     senior_citizen = st.selectbox("Senior Citizen", ['No', 'Yes'])
+    senior_citizen = 1 if senior_citizen == 'Yes' else 0
     gender = st.radio("Gender", ['Female', 'Male'])
     partner = st.selectbox("Partner", ['No', 'Yes'])
     dependents = st.selectbox("Dependents", ['No', 'Yes'])
@@ -68,7 +69,7 @@ def preprocess_user_input(user_input, encoder):
     # Perform necessary preprocessing on the user input
     for column in user_input.columns:
         if column in encoder:
-            user_input[column] = encoder[column].transform(user_input[column])
+            user_input[column] = encoder[column].transform(user_input[column].iloc[0]])[0])
     return user_input
 
 def predict_churn(model, preprocessed_data):
