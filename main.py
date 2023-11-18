@@ -23,9 +23,9 @@ def run():
     # Collect user input for prediction
     st.header("Enter Customer Information:")
 
-    tenure = st.number_input("Tenure", min_value=0.0, step=1.0, value=29.85)
-    monthly_charges = st.number_input("Monthly Charges", min_value=0.0, step=1.0, value=29.85)
-    total_charges = st.number_input("Total Charges", min_value=0.0, step=1.0, value=29.85)
+    tenure = st.number_input("Tenure", min_value=0.0, step=1.0, value=48.65)
+    monthly_charges = st.number_input("Monthly Charges", min_value=0.0, step=1.0, value=92.85)
+    total_charges = st.number_input("Total Charges", min_value=0.0, step=1.0, value=77.15)
     senior_citizen = st.selectbox("Senior Citizen", ['No', 'Yes'])
     gender = st.selectbox("Gender", ['Female', 'Male'])
     partner = st.selectbox("Partner", ['No', 'Yes'])
