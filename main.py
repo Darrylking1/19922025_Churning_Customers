@@ -19,65 +19,24 @@ def load_model_and_scaler():
 def user_input():
     st.write("# Customer Churn Prediction")
     st.write("\n Enter customer data")
-    # Manually encode the given variables with ranks
-    senior_citizen_rank = {'No': 0, 'Yes': 1}
-    gender_rank = {'Female': 0, 'Male': 1}
-    partner_rank = {'No': 0, 'Yes': 1}
-    dependents_rank = {'No': 0, 'Yes': 1}
-    phone_service_rank = {'No': 0, 'Yes': 1}
-    multiple_lines_rank = {'No phone service': 0, 'No': 1, 'Yes': 2}
-    internet_service_rank = {'DSL': 0, 'Fiber optic': 1, 'No': 2}
-    online_security_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    online_backup_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    device_protection_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    tech_support_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    streaming_tv_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    streaming_movies_rank = {'No': 0, 'Yes': 1, 'No internet service': 2}
-    contract_rank = {'Month-to-month': 0, 'One year': 1, 'Two year': 2}
-    paperless_billing_rank = {'No': 0, 'Yes': 1}
-    payment_method_rank = {
-        'Bank transfer (automatic)': 0,
-        'Credit card (automatic)': 1,
-        'Electronic check': 2,
-        'Mailed check': 3
-    }
-    
-    # Collect user input for prediction
+
     tenure = st.number_input("Tenure", value=1, min_value=1)
     monthly_charges = st.number_input("Monthly Charges", value=0.0)
     total_charges = st.number_input("Total Charges", value=0.0)
-    senior_citizen = st.selectbox("Senior Citizen", list(senior_citizen_rank.keys()))
-    senior_citizen = senior_citizen_rank[senior_citizen]
-    gender = st.radio("Gender", list(gender_rank.keys()))
-    gender = gender_rank[gender]
-    partner = st.selectbox("Partner", list(partner_rank.keys()))
-    partner = partner_rank[partner]
-    dependents = st.selectbox("Dependents", list(dependents_rank.keys()))
-    dependents = dependents_rank[dependents]
-    phone_service = st.selectbox("Phone Service", list(phone_service_rank.keys()))
-    phone_service = phone_service_rank[phone_service]
-    multiple_lines = st.selectbox("Multiple Lines", list(multiple_lines_rank.keys()))
-    multiple_lines = multiple_lines_rank[multiple_lines]
-    internet_service = st.selectbox("Internet Service", list(internet_service_rank.keys()))
-    internet_service = internet_service_rank[internet_service]
-    online_security = st.selectbox("Online Security", list(online_security_rank.keys()))
-    online_security = online_security_rank[online_security]
-    online_backup = st.selectbox("Online Backup", list(online_backup_rank.keys()))
-    online_backup = online_backup_rank[online_backup]
-    device_protection = st.selectbox("Device Protection", list(device_protection_rank.keys()))
-    device_protection = device_protection_rank[device_protection]
-    tech_support = st.selectbox("Tech Support", list(tech_support_rank.keys()))
-    tech_support = tech_support_rank[tech_support]
-    streaming_tv = st.selectbox("Streaming TV", list(streaming_tv_rank.keys()))
-    streaming_tv = streaming_tv_rank[streaming_tv]
-    streaming_movies = st.selectbox("Streaming Movies", list(streaming_movies_rank.keys()))
-    streaming_movies = streaming_movies_rank[streaming_movies]
-    contract = st.selectbox("Contract", list(contract_rank.keys()))
-    contract = contract_rank[contract]
-    paperless_billing = st.selectbox("Paperless Billing", list(paperless_billing_rank.keys()))
-    paperless_billing = paperless_billing_rank[paperless_billing]
-    payment_method = st.selectbox("Payment Method", list(payment_method_rank.keys()))
-    payment_method = payment_method_rank[payment_method]
+    senior_citizen = st.selectbox("Senior Citizen", ['No', 'Yes'])
+    gender = st.radio("Gender", ['Female', 'Male'])
+    partner = st.selectbox("Partner", ['No', 'Yes'])
+    dependents = st.selectbox("Dependents", ['No', 'Yes'])
+    multiple_lines = st.selectbox("Multiple Lines", ['No phone service', 'No', 'Yes'])
+    internet_service = st.selectbox("Internet Service", ['DSL', 'Fiber optic', 'No'])
+    online_security = st.selectbox("Online Security", ['No', 'Yes', 'No internet service'])
+    online_backup = st.selectbox("Online Backup", ['Yes', 'No', 'No internet service'])
+    device_protection = st.selectbox("Device Protection", ['No', 'Yes', 'No internet service'])
+    tech_support = st.selectbox("Tech Support", ['No', 'Yes', 'No internet service'])
+    streaming_movies = st.selectbox("Streaming Movies", ['No', 'Yes', 'No internet service'])
+    contract = st.selectbox("Contract", ['Month-to-month', 'One year', 'Two year'])
+    paperless_billing = st.selectbox("Paperless Billing", ['Yes', 'No'])
+    payment_method = st.selectbox("Payment Method", ['Electronic check', 'Mailed check', 'Bank transfer (automatic)', 'Credit card (automatic)'])
 
     data = {
         'tenure': tenure,
@@ -87,14 +46,12 @@ def user_input():
         'gender': gender,
         'Partner': partner,
         'Dependents': dependents,
-        'PhoneService': phone_service, 
         'MultipleLines': multiple_lines,
         'InternetService': internet_service,
         'OnlineSecurity': online_security,
         'OnlineBackup': online_backup,
         'DeviceProtection': device_protection,
         'TechSupport': tech_support,
-        'StreamingTV': streaming_tv,
         'StreamingMovies': streaming_movies,
         'Contract': contract,
         'PaperlessBilling': paperless_billing,
@@ -103,14 +60,12 @@ def user_input():
 
     return pd.DataFrame(data, index=[0])
 
-# def preprocess_user_input(user_input, encoder):
-#     # Perform necessary preprocessing on the user input
-#     for column in user_input.columns:
-#         if column in encoder:
-#             user_input[column] = encoder[column].transform([user_input[column].iloc[0]])[0]
-#         else:
-#             print(column)
-#     return user_input
+def preprocess_user_input(user_input, encoder):
+    # Perform necessary preprocessing on the user input
+    for column in user_input.select_dtypes(include=['object']).columns:
+        if column in encoder:
+            user_input[column] = encoder[column].transform([user_input[column].iloc[0]])[0]
+    return user_input
 
 def predict_churn(model, preprocessed_data):
     # Make predictions using the provided model
@@ -129,10 +84,13 @@ def run():
     # User input
     data = user_input()
 
+    # Perform preprocessing on user input
+    preprocessed_data = preprocess_user_input(data, label_encoder)
+
     # Predict customer churn
     predict_button = st.button("Predict Churn")
     if predict_button:
-        prediction = predict_churn(model, data)
+        prediction = predict_churn(model, preprocessed_data)
         if prediction == 0:
             st.success("The customer is predicted to stay.")
         else:
